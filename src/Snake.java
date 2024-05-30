@@ -1,12 +1,11 @@
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * Represents the snake in the game.
  */
 public class Snake {
-    private final LinkedList<Point> body;
+    private final ArrayList<Point> body;
     private Direction direction;
     private final int UNIT_SIZE;
 
@@ -17,7 +16,7 @@ public class Snake {
      */
     public Snake(int unitSize) {
         this.UNIT_SIZE = unitSize;
-        body = new LinkedList<>();
+        body = new ArrayList<>();
         body.add(new Point(UNIT_SIZE, UNIT_SIZE));
         direction = Direction.RIGHT;
     }
@@ -28,7 +27,7 @@ public class Snake {
      */
     public void move() {
         moveInDirection();
-        body.removeLast();
+        body.remove(body.size() - 1);
     }
 
     /**
@@ -53,7 +52,7 @@ public class Snake {
         }
 
         // Draw head
-        Point head = body.getFirst();
+        Point head = body.get(0);
         g.setColor(Color.GREEN);
         if (body.size() == 1) {
             // Draw head as a circle if there is no body
@@ -77,7 +76,7 @@ public class Snake {
      * @return true if a collision is detected, false otherwise
      */
     public boolean checkCollision() {
-        Point head = body.getFirst();
+        Point head = body.get(0);
         for (int i = 1; i < body.size(); i++) {
             if (head.equals(body.get(i))) {
                 return true;
@@ -110,15 +109,15 @@ public class Snake {
      * @return the head of the snake as a Point
      */
     public Point getHead() {
-        return body.getFirst();
+        return body.get(0);
     }
 
     /**
      * Gets the body of the snake.
      *
-     * @return the body of the snake as a LinkedList of Points
+     * @return the body of the snake as an ArrayList of Points
      */
-    public LinkedList<Point> getBody() {
+    public ArrayList<Point> getBody() {
         return body;
     }
 
@@ -127,7 +126,7 @@ public class Snake {
      * based on the direction and keeping the rest of the body unchanged.
      */
     private void moveInDirection() {
-        Point head = body.getFirst();
+        Point head = body.get(0);
         Point newHead = new Point(head);
         switch (direction) {
             case UP -> newHead.y -= UNIT_SIZE;
@@ -135,6 +134,6 @@ public class Snake {
             case LEFT -> newHead.x -= UNIT_SIZE;
             case RIGHT -> newHead.x += UNIT_SIZE;
         }
-        body.addFirst(newHead);
+        body.add(0, newHead);
     }
 }
